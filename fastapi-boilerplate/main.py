@@ -3,6 +3,7 @@ from collections.abc import AsyncIterator, Coroutine
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from functools import lru_cache
+from pathlib import Path
 from typing import Annotated, Any, Callable, TypeAlias, TypedDict, cast
 
 from fastapi import APIRouter, Depends, FastAPI, Request, Response, status
@@ -26,13 +27,19 @@ class FastApiKwargs(TypedDict):
 class Settings(BaseSettings):
   """Application settings."""
 
-  model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+  _env_file = Path(__file__).parent / ".env"
+  _secrets_dir = Path("/run/secrets")
+  model_config = SettingsConfigDict(
+    env_file=_env_file if _env_file.exists() else None,
+    secrets_dir=_secrets_dir if _secrets_dir.is_dir() else None,
+    extra="ignore",
+  )
 
   # FastAPI settings
   title: str = "FastAPI Template"
   description: str = "Starter FastAPI application."
   debug: bool = False
-  version: str = "0.0.1"
+  version: str = "0.2.1"
   docs_url: str = "/api/schema/docs"
   redoc_url: str = "/api/schema/redoc"
   openapi_url: str = "/api/schema/openapi.json"
