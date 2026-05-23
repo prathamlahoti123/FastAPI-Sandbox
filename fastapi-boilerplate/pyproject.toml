@@ -14,6 +14,8 @@ lint = ["ruff>=0.15.9", "ty>=0.0.29"]
 test = ["asgi-lifespan>=2.1.0", "faker>=40.13.0", "pytest>=9.0.2"]
 
 [tool.pytest.ini_options]
+python_files = ["test_*.py"]
+anyio_mode = "auto"
 addopts = """
   --durations=10
   --durations-min=0.1
