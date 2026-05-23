@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     title: str = "FastAPI Template"
     description: str = "Starter FastAPI application."
     debug: bool = False
-    version: str = "0.2.1"
+    version: str = "0.0.1"
     docs_url: str = "/api/schema/docs"
     redoc_url: str = "/api/schema/redoc"
     openapi_url: str = "/api/schema/openapi.json"
