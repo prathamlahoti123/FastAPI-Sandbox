@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Annotated, Any, Callable, TypeAlias, TypedDict, cast
 
 from fastapi import APIRouter, Depends, FastAPI, Request, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -154,6 +155,20 @@ app = FastAPI(
     exception_handlers=error_handlers,
     lifespan=lifespan,
 )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/")
+async def index() -> dict[str, str]:
+    """Return sample 'hello world' message."""
+    return {"message": "Hello, World!"}
+
 
 internal_router = APIRouter(prefix="/api", tags=["internal"])
 
